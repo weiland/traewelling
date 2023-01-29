@@ -51,7 +51,6 @@
   "arrival": "2023-01-16T11:52:00+01:00",
   "plannedArrival": "2023-01-16T11:52:00+01:00",
   "arrivalDelay": null,
-  "reachable": true,
   "polyline": {
     "type": "FeatureCollection",
     "features": []
