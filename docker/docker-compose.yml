@@ -67,7 +67,7 @@ services:
       - ./database:/var/lib/mysql
 
   db-rest:
-    image: derhuerst/db-rest:5
+    image: derhuerst/db-rest:6
     container_name: db-rest
     restart: always
     depends_on:
