@@ -289,15 +289,14 @@ abstract class HafasController extends Controller
      */
     public static function getHafasTrip(string $tripID, string $lineName): HafasTrip {
         $trip = HafasTrip::where('trip_id', $tripID)->where('linename', $lineName)->first();
-        return $trip ?? self::fetchHafasTrip($tripID, $lineName);
+        return $trip ?? self::fetchHafasTrip($tripID);
     }
 
     /**
      * @throws HafasException|JsonException
      */
-    public static function fetchRawHafasTrip(string $tripId, string $lineName) {
+    public static function fetchRawHafasTrip(string $tripId) {
         $tripResponse = self::getHttpClient()->get("trips/$tripId", [
-            'lineName'  => $lineName,
             'polyline'  => 'true',
             'stopovers' => 'true'
         ]);
@@ -323,8 +322,8 @@ abstract class HafasController extends Controller
      * @return HafasTrip
      * @throws HafasException
      */
-    public static function fetchHafasTrip(string $tripID, string $lineName): HafasTrip {
-        $tripJson    = self::fetchRawHafasTrip($tripID, $lineName);
+    public static function fetchHafasTrip(string $tripID): HafasTrip {
+        $tripJson    = self::fetchRawHafasTrip($tripID);
         $origin      = self::parseHafasStopObject($tripJson->origin);
         $destination = self::parseHafasStopObject($tripJson->destination);
         $operator    = null;
