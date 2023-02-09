@@ -68,7 +68,7 @@
             </p>
         @endif
         <hr>
-        <p class="mb-0">
+        <p>
             <i class="fa fa-stopwatch d-inline"></i>&nbsp;
             <b>{!! durationToSpan(secondsToDuration(session()->get('checkin-success')['duration'] * 60)) !!}</b>
             —
@@ -80,6 +80,17 @@
             —
             <i class="fa fa-dice-d20 d-inline"></i>&nbsp;
             <b>{{ session()->get('checkin-success')['points'] }}<small>{{__('profile.points-abbr')}}</small></b>
+        </p>
+        <p class="mb-0">
+            <button
+                class="btn btn-outline-success"
+                id="checkin-share"
+                data-shareLink="{{ route("statuses.get", ['id' => session()->get('checkin-success')['status_id']]) }}"
+                data-shareText="{{ session()->get('checkin-success')['status_socialText'] }}"
+            >
+                <i class="fa-solid fa-share-from-square me-2"></i>
+                Check-in teilen
+            </button>
         </p>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

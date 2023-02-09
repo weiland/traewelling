@@ -192,6 +192,8 @@ class FrontendTransportController extends Controller
             $trainCheckin = $backendResponse['status']->trainCheckin;
 
             return redirect()->route('dashboard')->with('checkin-success', [
+                'status_id'               => $backendResponse['status']->id,
+                'status_socialText'       => $backendResponse['status']->socialText,
                 'distance'                => $trainCheckin->distance,
                 'duration'                => $trainCheckin->duration,
                 'points'                  => $trainCheckin->points,

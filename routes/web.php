@@ -187,10 +187,12 @@ Route::middleware(['auth', 'privacy'])->group(function() {
     });
 
     Route::get('/dashboard', [FrontendStatusController::class, 'getDashboard'])
-         ->name('dashboard');
+         ->name('dashboard')
+         ->middleware(\App\Http\Middleware\PermissionsPolicyMiddleware::class);
 
     Route::get('/dashboard/global', [FrontendStatusController::class, 'getGlobalDashboard'])
-         ->name('globaldashboard');
+         ->name('globaldashboard')
+         ->middleware(\App\Http\Middleware\PermissionsPolicyMiddleware::class);
 
     Route::delete('/destroystatus', [FrontendStatusController::class, 'DeleteStatus'])
          ->name('status.delete');

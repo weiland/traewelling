@@ -48,6 +48,8 @@ class StatusController extends Controller
                 return redirect()->route('statuses.get', ['id' => $status->id])
                                  ->with('checkin-success', [
                                      'reason'                  => 'status-updated',
+                                     'status_id'               => $status->id,
+                                     'status_socialText'       => $status->socialText,
                                      'distance'                => $status->trainCheckin->distance,
                                      'duration'                => $status->trainCheckin->duration,
                                      'points'                  => $status->trainCheckin->points,

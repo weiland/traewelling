@@ -29,6 +29,7 @@ window.addEventListener("load", () => {
     require("./components/statusMap");
     require("./components/timepicker");
     require("./components/business-check-in");
+    require("./components/checkin-share");
     require("./../../node_modules/bootstrap/js/dist/modal");
     require("./appControls");
     require("bootstrap-cookie-alert/cookiealert");
