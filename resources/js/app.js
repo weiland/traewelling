@@ -43,7 +43,6 @@ window.addEventListener("load", () => {
     require("./preact/index");
     require("./components/alert");
     require("./components/ActiveJourneys");
-    require("./components/notifications-board");
     require("./components/progressbar");
     require("./components/settings");
     require("./components/station-autocomplete");

@@ -103,15 +103,9 @@
                                         </button>
                                     </div>
                                 </form>
-                                <li class="nav-item d-none d-md-inline-block">
-                                    <a href="javascript:void(0)" id="notifications-toggle"
-                                       class="nav-link notifications-board-toggle"
-                                       data-mdb-toggle="modal"
-                                       data-mdb-target="#notifications-board">
+                                <li class="nav-item d-none d-md-inline-block" id="notifications-button">
+                                    <a class="nav-link notifications-board-toggle">
                                         <span class="notifications-bell far fa-bell"></span>
-                                        <span class="notifications-pill badge rounded-pill badge-notification" hidden>
-                                            0
-                                        </span>
                                     </a>
                                 </li>
                                 <li class="nav-item dropdown">
