@@ -22,6 +22,7 @@ class NotificationController extends Controller
                                                         'type'            => $notification->type,
                                                         'html'            => $notification->html,
                                                         'read_at'         => $notification->read_at,
+                                                        'id'              => $notification->id,
                                                     ]);
                                  }
                                  return null;

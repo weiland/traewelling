@@ -258,6 +258,6 @@
         </script>
     </body>
 
-    @include('includes.modals.notifications-board')
+    <div id="notifications-modal" />
     @yield('footer')
 </html>
