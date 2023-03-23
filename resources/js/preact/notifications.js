@@ -103,9 +103,7 @@ function NotificationsModal() {
                 <br/>¯\_(ツ)_/¯
             </div>;
 
-        return <ul>
-            {notifications.map(notification => <NotificationItem {...notification} />)}
-        </ul>;
+        return notifications.map(notification => <NotificationItem {...notification} />);
     }
 
     function onMarkAllReadClick() {
@@ -117,9 +115,9 @@ function NotificationsModal() {
     }
 
     return <MDBModal show={isOpen} setShow={setIsOpen} tabIndex={-1}>
-        <MDBModalDialog>
+        <MDBModalDialog id='notifications-board'>
             <MDBModalContent>
-                <MDBModalHeader>
+                <MDBModalHeader id='modal-header'>
                     <MDBModalTitle>{__('notifications.title')}</MDBModalTitle>
                     {/* TODO: Adjust so it looks correctly. */}
                     {/* TODO: Move to an MDBBtn. */}
@@ -129,18 +127,16 @@ function NotificationsModal() {
                        aria-label={__('notifications.mark-all-read')}>
                         <span aria-hidden="true"><i className="fa-solid fa-check-double"></i></span>
                     </a>
-                    <MDBBtn className='btn-close' color='none' onClick={toggleOpen}></MDBBtn>
+                    <MDBBtn id='mark-all-read' className='btn-close' color='none' onClick={toggleOpen}></MDBBtn>
                 </MDBModalHeader>
-                <MDBModalBody>
-                    {modalBody()
-                    }
+                <MDBModalBody id="notifications-list">
+                    {modalBody()}
                 </MDBModalBody>
             </MDBModalContent>
         </MDBModalDialog>
     </MDBModal>;
 }
 
-// TODO: Place the correct data (will need API changes) and make pretty
 function NotificationItem(notification) {
     const {toggleRead} = useContext(NotificationsContext);
 
@@ -154,11 +150,27 @@ function NotificationItem(notification) {
             });
     }
 
-    return <li>
-        {notification.notifiable_type} <MDBBtn onClick={onToggleReadButtonClick}>{isUnread(notification)
-        ? __("notifications.mark-read")
-        : __("notifications.mark-unread")}</MDBBtn>
-    </li>;
+    let unread = isUnread(notification);
+
+    return <div className={classNames("row", notification.color, {"unread": unread})}>
+        <a className="col-1 col-sm-1 align-left lead" href={notification.link}>
+            <i className={notification.icon}></i>
+        </a>
+        <a className="col-7 col-sm-8 align-middle" href={notification.link}>
+            <p className="lead" dangerouslySetInnerHTML={{__html: notification.lead}}></p>
+            <span dangerouslySetInnerHTML={{__html: notification.notice}}></span>
+        </a>
+        <div className="col col-sm-3 text-end">
+            <button type="button" className="interact toggleReadState" onClick={onToggleReadButtonClick}>
+                <span aria-hidden="true" aria-label={unread
+                    ? __("notifications.mark-read")
+                    : __("notifications.mark-unread")}>
+                    <i className={classNames("far", {"fa-envelope": unread, "fa-envelope-open": !unread})}></i>
+                </span>
+            </button>
+            <div className="text-muted">{notification.date_for_humans}</div>
+        </div>
+    </div>;
 }
 
 render(<NotificationsContextProvider>

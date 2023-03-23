@@ -8,6 +8,7 @@ use App\Models\Status;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Notifications\DatabaseNotification;
+use JetBrains\PhpStorm\ArrayShape;
 use stdClass;
 
 class MastodonNotSent extends BaseNotification
@@ -22,8 +23,14 @@ class MastodonNotSent extends BaseNotification
         $this->status = $status;
     }
 
-    /** @deprecated will be handled in frontend */
-    public static function render($notification): ?string {
+    #[ArrayShape([
+        'color'           => "string",
+        'icon'            => "string",
+        'lead'            => 'string',
+        'link'            => 'string',
+        'notice'          => "string",
+        "date_for_humans" => "string"
+    ])] public static function render($notification): array|null {
         try {
             $detail = self::detail($notification);
         } catch (ShouldDeleteNotificationException $e) {
@@ -33,17 +40,14 @@ class MastodonNotSent extends BaseNotification
         $data = $notification->data;
 
 
-        return view("includes.notification", [
+        return [
             'color'  => "warning",
             'icon'   => "fas fa-exclamation-triangle",
             'lead'   => __('notifications.socialNotShared.lead', ['platform' => "Mastodon"]),
             "link"   => route('statuses.get', ['id' => $detail->status->id]),
             'notice' => __('notifications.socialNotShared.mastodon.' . $data['error']),
-
-            'date_for_humans' => $notification->created_at->diffForHumans(),
-            'read'            => $notification->read_at != null,
-            'notificationId'  => $notification->id
-        ])->render();
+            'date_for_humans' => $notification->created_at->diffForHumans()
+        ];
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Models\Status;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Notifications\DatabaseNotification;
+use JetBrains\PhpStorm\ArrayShape;
 use stdClass;
 
 class UserJoinedConnection extends BaseNotification
@@ -26,8 +27,15 @@ class UserJoinedConnection extends BaseNotification
         $this->status = $status;
     }
 
-    /** @deprecated will be handled in frontend */
-    public static function render(mixed $notification): ?string {
+    #[ArrayShape([
+        'color'           => "string",
+        'icon'            => "string",
+        'lead'            => 'string',
+        'link'            => 'string',
+        'notice'          => "string",
+        "date_for_humans" => "string"
+    ])]
+    public static function render(mixed $notification): array|null {
         try {
             $detail = self::detail($notification);
         } catch (ShouldDeleteNotificationException) {
@@ -35,7 +43,7 @@ class UserJoinedConnection extends BaseNotification
             return null;
         }
 
-        return view("includes.notification", [
+        return [
             'color'           => "neutral",
             'icon'            => "fa fa-train",
             'lead'            => __('notifications.userJoinedConnection.lead', [
@@ -51,10 +59,8 @@ class UserJoinedConnection extends BaseNotification
                     'destination' => $detail->status->trainCheckin->Destination->name,
                 ]
             ),
-            'date_for_humans' => $notification->created_at->diffForHumans(),
-            'read'            => $notification->read_at !== null,
-            'notificationId'  => $notification->id
-        ])->render();
+            'date_for_humans' => $notification->created_at->diffForHumans()
+        ];
     }
 
     /**

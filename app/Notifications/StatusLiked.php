@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Notifications\DatabaseNotification;
+use JetBrains\PhpStorm\ArrayShape;
 use stdClass;
 
 class StatusLiked extends BaseNotification
@@ -30,8 +31,15 @@ class StatusLiked extends BaseNotification
         $this->like = $like;
     }
 
-    /** @deprecated will be handled in frontend */
-    public static function render($notification): ?string {
+    #[ArrayShape([
+        'color'           => "string",
+        'icon'            => "string",
+        'lead'            => 'string',
+        'link'            => 'string',
+        'notice'          => "string",
+        "date_for_humans" => "string"
+    ])]
+    public static function render($notification): array|null {
         try {
             $detail = self::detail($notification);
         } catch (ShouldDeleteNotificationException) {
@@ -40,7 +48,7 @@ class StatusLiked extends BaseNotification
         }
         $hafas = $detail->status->trainCheckin->hafasTrip;
 
-        return view("includes.notification", [
+        return [
             'color'           => "neutral",
             'icon'            => "fas fa-heart",
             'lead'            => __('notifications.statusLiked.lead', ['likerUsername' => $detail->sender->username]),
@@ -53,11 +61,8 @@ class StatusLiked extends BaseNotification
                     'createdDate' => Carbon::parse($hafas->departure)->isoFormat(__('date-format'))
                 ]
             ),
-            'date_for_humans' => $notification->created_at->diffForHumans(),
-            'read'            => $notification->read_at != null,
-            'notificationId'  => $notification->id
-
-        ])->render();
+            'date_for_humans' => $notification->created_at->diffForHumans()
+        ];
     }
 
     /**

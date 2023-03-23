@@ -19,8 +19,16 @@ class EventSuggestionProcessed extends BaseNotification
         $this->event           = $event;
     }
 
-    public static function render(mixed $notification): ?string {
-        return view("includes.notification", [
+    #[ArrayShape([
+        'color'           => "string",
+        'icon'            => "string",
+        'lead'            => 'string',
+        'link'            => 'string',
+        'notice'          => "string",
+        "date_for_humans" => "string"
+    ])]
+    public static function render(mixed $notification): array {
+        return [
             'color'           => 'neutral',
             'icon'            => 'fa-regular fa-calendar',
             'lead'            => __('notifications.eventSuggestionProcessed.lead', ["name" => $notification->data["name"]]),
@@ -28,10 +36,8 @@ class EventSuggestionProcessed extends BaseNotification
                 'eventSlug' => $notification->data["event"]["slug"]
             ]) : "#",
             'notice'          => __('notifications.eventSuggestionProcessed.' . ($notification->data["accepted"] ? "accepted" : "denied")),
-            'date_for_humans' => $notification->created_at->diffForHumans(),
-            'read'            => $notification->read_at != null,
-            'notificationId'  => $notification->id
-        ])->render();
+            'date_for_humans' => $notification->created_at->diffForHumans()
+        ];
     }
 
     public function via($notifiable): array {

@@ -1,7 +1,7 @@
 @import "../variables";
 
 #notifications-board {
-    .modal-header {
+    #modal-header {
         justify-content: initial;
 
         h2 {
@@ -19,7 +19,7 @@
         }
     }
 
-    .modal-body#notifications-list {
+    #notifications-list {
         padding: 0;
 
         .row {

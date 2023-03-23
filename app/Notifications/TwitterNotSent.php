@@ -23,8 +23,15 @@ class TwitterNotSent extends BaseNotification
         $this->status = $status;
     }
 
-    /** @deprecated will be handled in frontend */
-    public static function render(mixed $notification): ?string {
+    #[ArrayShape([
+        'color'           => "string",
+        'icon'            => "string",
+        'lead'            => 'string',
+        'link'            => 'string',
+        'notice'          => "string",
+        "date_for_humans" => "string"
+    ])]
+    public static function render(mixed $notification): array|null {
         try {
             self::detail($notification);
         } catch (ShouldDeleteNotificationException) {
@@ -33,17 +40,14 @@ class TwitterNotSent extends BaseNotification
         }
 
         $data = $notification->data;
-        return view("includes.notification", [
+        return [
             'color'  => "warning",
             'icon'   => "fas fa-exclamation-triangle",
             'lead'   => __('notifications.socialNotShared.lead', ['platform' => "Twitter"]),
             "link"   => route('statuses.get', ['id' => $data['status_id']]),
             'notice' => __('notifications.socialNotShared.twitter.' . $data['error']),
-
-            'date_for_humans' => $notification->created_at->diffForHumans(),
-            'read'            => $notification->read_at != null,
-            'notificationId'  => $notification->id
-        ])->render();
+            'date_for_humans' => $notification->created_at->diffForHumans()
+        ];
     }
 
     /**

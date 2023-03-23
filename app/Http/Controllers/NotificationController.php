@@ -13,19 +13,14 @@ class NotificationController extends Controller
                              ->limit(10)
                              ->get()
                              ->map(function($notification) {
-                                 $notification->html = $notification->type::render($notification);
-
-                                 if ($notification->html != null) {
-                                     return collect([
-                                                        'notifiable_type' => $notification->notifiable_type,
-                                                        'notifiable_id'   => (string) $notification->notifiable_id,
-                                                        'type'            => $notification->type,
-                                                        'html'            => $notification->html,
-                                                        'read_at'         => $notification->read_at,
-                                                        'id'              => $notification->id,
-                                                    ]);
+                                 $information = $notification->type::render($notification);
+                                 if ($information == null) {
+                                     return null;
                                  }
-                                 return null;
+
+                                 return array_merge(
+                                     $notification->setVisible(["id", "read_at", "type"])->toArray(),
+                                     $information);
                              })
                              ->filter(function($notificationOrNull) {
                                  // We don't need empty notifications

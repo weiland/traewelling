@@ -28,8 +28,14 @@ class FollowRequestIssued extends BaseNotification
         $this->followRequest = $followRequest;
     }
 
-    /** @deprecated will be handled in frontend */
-    public static function render(mixed $notification): ?string {
+    #[ArrayShape([
+        'color'           => "string",
+        'icon'            => "string",
+        'lead'            => 'string',
+        'link'            => 'string',
+        'notice'          => "string",
+        "date_for_humans" => "string"
+    ])] public static function render(mixed $notification): array|null {
         try {
             $detail = self::detail($notification);
         } catch (ShouldDeleteNotificationException) {
@@ -37,17 +43,15 @@ class FollowRequestIssued extends BaseNotification
             return null;
         }
 
-        return view("includes.notification", [
+        return [
             'color'           => 'neutral',
             'icon'            => 'fas fa-user-plus',
             'lead'            => __('notifications.userRequestedFollow.lead',
                                     ['followerRequestUsername' => $detail->sender->username]),
             'link'            => route('settings.follower'),
             'notice'          => __('notifications.userRequestedFollow.notice'),
-            'date_for_humans' => $notification->created_at->diffForHumans(),
-            'read'            => $notification->read_at != null,
-            'notificationId'  => $notification->id
-        ])->render();
+            'date_for_humans' => $notification->created_at->diffForHumans()
+        ];
     }
 
     /**Detail-Handler of notification
