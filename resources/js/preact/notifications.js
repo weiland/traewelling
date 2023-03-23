@@ -11,11 +11,10 @@ import {
     MDBModalHeader,
     MDBModalTitle,
 } from 'mdb-react-ui-kit';
+import {trans} from "matice";
 
 const NotificationsContext = createContext();
 
-// TODO: Use actual translations
-const __     = (s) => s;
 let isUnread = n => n.read_at === null;
 
 function NotificationsContextProvider({children}) {
@@ -92,14 +91,14 @@ function NotificationsModal() {
     function modalBody() {
         if (!isLoaded) {
             return <div id="notifications-empty" className="text-center text-muted">
-                {__('notifications.loading')}
+                {trans('notifications.loading')}
                 {/* TODO: Add translation string to laravel body */}
             </div>
         }
 
         if (notifications.length === 0)
             return <div id="notifications-empty" className="text-center text-muted">
-                {__('notifications.empty')}
+                {trans('notifications.empty')}
                 <br/>¯\_(ツ)_/¯
             </div>;
 
@@ -118,13 +117,13 @@ function NotificationsModal() {
         <MDBModalDialog id='notifications-board'>
             <MDBModalContent>
                 <MDBModalHeader id='modal-header'>
-                    <MDBModalTitle>{__('notifications.title')}</MDBModalTitle>
+                    <MDBModalTitle>{trans('notifications.title')}</MDBModalTitle>
                     {/* TODO: Adjust so it looks correctly. */}
                     {/* TODO: Move to an MDBBtn. */}
                     <a href="javascript:void(0)"
                        className="text-muted"
                        onClick={onMarkAllReadClick}
-                       aria-label={__('notifications.mark-all-read')}>
+                       aria-label={trans('notifications.mark-all-read')}>
                         <span aria-hidden="true"><i className="fa-solid fa-check-double"></i></span>
                     </a>
                     <MDBBtn id='mark-all-read' className='btn-close' color='none' onClick={toggleOpen}></MDBBtn>
@@ -161,10 +160,11 @@ function NotificationItem(notification) {
             <span dangerouslySetInnerHTML={{__html: notification.notice}}></span>
         </a>
         <div className="col col-sm-3 text-end">
-            <button type="button" className="interact toggleReadState" onClick={onToggleReadButtonClick}>
-                <span aria-hidden="true" aria-label={unread
-                    ? __("notifications.mark-read")
-                    : __("notifications.mark-unread")}>
+            <button type="button"
+                    aria-label={unread ? trans("notifications.mark-as-read") : trans("notifications.mark-as-unread")}
+                    className="interact toggleReadState"
+                    onClick={onToggleReadButtonClick}>
+                <span aria-hidden="true">
                     <i className={classNames("far", {"fa-envelope": unread, "fa-envelope-open": !unread})}></i>
                 </span>
             </button>

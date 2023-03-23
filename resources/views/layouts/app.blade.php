@@ -6,6 +6,11 @@
 
         @include('layouts.includes.meta')
 
+        <!-- Translations -->
+        <!-- TODO: Fix that so many languages are loaded. See issue with the translation library authors: https://github.com/GENL/matice/issues/39 -->
+        @translations
+        <!--/ Translations -->
+
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}"></script>
 
