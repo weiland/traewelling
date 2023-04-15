@@ -138,3 +138,4 @@ public/css/*.css.map
 .devenv
 .direnv
 result*
+result
