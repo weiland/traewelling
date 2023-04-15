@@ -127,3 +127,7 @@ public/js/*.js.LICENSE.txt
 public/css/*.css
 public/css/*.css.map
 .phpunit.result.cache
+
+# nix
+result
+result-*
