@@ -41,6 +41,7 @@
         "spatie/laravel-sitemap": "^6.0",
         "spatie/laravel-validation-rules": "^3.2",
         "spatie/laravel-webhook-server": "^3.4",
+        "stephank/composer-plugin-nixify": "^1.1",
         "trwl/socialite-mastodon": "^1.2",
         "uwumarie/laravel-bitflags": "dev-main"
     },
@@ -60,12 +61,16 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "stephank/composer-plugin-nixify": true
+        }
     },
     "extra": {
         "laravel": {
             "dont-discover": []
-        }
+        },
+        "generate-default-nix": false
     },
     "autoload": {
         "files": [
