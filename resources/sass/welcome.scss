@@ -1,87 +1,106 @@
-html,
-body {
-  background-color: #fff;
-  color: #fff;
-  font-family: 'Nunito', sans-serif;
-  font-weight: 200;
-  height: 100vh;
-  margin: 0;
+$primary: rgb(199, 39, 48);
+@import "~bootstrap";
+
+// Fonts
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+
+.container {
+    max-width: 960px;
 }
 
-.full-height {
-  height: 100vh;
+/*
+ * Custom translucent site header
+ */
+
+.site-header {
+    background-color: rgba(0, 0, 0, .85);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
 }
 
-.flex-center {
-  align-items: center;
-  display: flex;
-  justify-content: center;
+.site-header a {
+    color: #8e8e8e;
+    transition: color .15s ease-in-out;
 }
 
-.position-ref {
-  position: relative;
+.site-header a:hover {
+    color: #fff;
+    text-decoration: none;
 }
 
-.top-right {
-  z-index: 3;
-  position: absolute;
-  right: 10px;
-  top: 18px;
+/*
+ * Dummy devices (replace them with your own or something else entirely!)
+ */
+
+.product-device {
+    position: absolute;
+    right: 10%;
+    bottom: -30%;
+    width: 300px;
+    height: 540px;
+    background-color: #333;
+    border-radius: 21px;
+    transform: rotate(30deg);
 }
 
-.bottom-center {
-  z-index: 3;
-  position: absolute;
-  bottom: 18px;
-  text-align: center;
+.product-device::before {
+    position: absolute;
+    top: 10%;
+    right: 10px;
+    bottom: 10%;
+    left: 10px;
+    content: "";
+    background-color: rgba(255, 255, 255, .1);
+    border-radius: 5px;
 }
 
-.content {
-  z-index: 3;
-  text-align: center;
-  position: absolute;
+.product-device-2 {
+    top: -25%;
+    right: auto;
+    bottom: 0;
+    left: 5%;
+    background-color: #e5e5e5;
 }
 
-.title {
-  font-size: 84px;
+
+/*
+ * Extra utilities
+ */
+
+.flex-equal > * {
+    flex: 1;
 }
 
-.links > a {
-  color: #fff;
-  padding: 0 25px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.1rem;
-  text-decoration: none;
-  text-transform: uppercase;
+@media (min-width: 768px) {
+    .flex-md-equal > * {
+        flex: 1;
+    }
 }
 
-.m-b-md {
-  margin-bottom: 30px;
+.btn-bd-primary {
+    --bd-violet-bg: #712cf9;
+    --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+    --bs-btn-font-weight: 600;
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: var(--bd-violet-bg);
+    --bs-btn-border-color: var(--bd-violet-bg);
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: #6528e0;
+    --bs-btn-hover-border-color: #6528e0;
+    --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #5a23c8;
+    --bs-btn-active-border-color: #5a23c8;
 }
 
-.videoContainer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  background-attachment: scroll;
-  overflow: hidden;
+.bd-mode-toggle {
+    z-index: 1500;
 }
 
-.videoContainer video {
-  min-width: 100%;
-  min-height: 100%;
-  position: relative;
-  z-index: 1;
-}
-
-.videoContainer .overlay {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  background-image: linear-gradient(#d4353e, #a20b12);
-  opacity: 0.8;
+#main-intro .icon-link {
+    text-decoration: none;
 }
