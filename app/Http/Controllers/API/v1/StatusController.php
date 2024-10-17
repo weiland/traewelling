@@ -634,4 +634,47 @@ class StatusController extends Controller
         }
         return $this->sendError('No active status');
     }
+
+    /**
+     * @OA\Get(
+     *      path="/statuses/SEARCH",
+     *      operationId="statusesSearch",
+     *      tags={"Auth"},
+     *      summary="Status Search",
+     *      description="This request returns whether the currently logged-in user has an active check-in or not.",
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="data", type="object",
+     *                      ref="#/components/schemas/StatusResource"
+     *              )
+     *          )
+     *       ),
+     *       @OA\Response(response=401, description="Unauthorized"),
+     *       @OA\Response(response=404, description="No results found"),
+     *       security={
+     *          {"passport": {"read-statuses"}}, {"token": {}}
+     *
+     *       }
+     *     )
+     *
+     * @return AnonymousResourceCollection
+     */
+    public function search(string $query): AnonymousResourceCollection|JsonResponse {
+
+        try {
+            return StatusResource::collection(StatusBackend::searchStatus($query));
+        } catch (InvalidArgumentException) {
+            return $this->sendError(['message' => __('messages.exception.general')], 400);
+        }
+
+        // $status = StatusBackend::getStatus($id);
+        // try {
+        //     $this->authorize('view', $status);
+        // } catch (AuthorizationException) {
+        //     abort(403, 'Status invisible to you.');
+        // }
+        // return new StatusResource($status);
+    }
 }

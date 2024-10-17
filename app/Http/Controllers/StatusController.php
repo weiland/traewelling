@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -294,5 +295,55 @@ class StatusController extends Controller
                                   'event_id'   => $event?->id,
                                   'client_id'  => APIController::getCurrentOAuthClient()?->id,
                               ]);
+    }
+
+    // TODO: use `Paginator` as return type
+    // TODO: consider using POST?
+    // TODO: differentiate between simple and full/complete result
+    // TODO: Search for #hashtags? Or treat them as normal strings.
+    // TODO: support case-sensitive-search? no.
+    /**
+     * Authorization in Frontend required! $this->authorize('view', $status);
+     *
+     * @param string $query
+     *
+     * @return Paginator
+     * @throws InvalidArgumentException
+     * @api v1
+     * @frontend
+     */
+    public static function searchStatus(string $query): ?Collection {
+        $validator = Validator::make(['query' => $query], ['query' => [
+            'required',
+            'regex:/^[a-zA-Z0-9_\-\s]*$/'
+        ]]);
+        if ($validator->fails()) {
+            throw new InvalidArgumentException();
+        }
+
+        $isCompact = true;
+        $with = $isCompact ? [] : [
+                                'event',
+                                'likes',
+                                'user.blockedByUsers',
+                                'user.blockedUsers',
+                                'user.followers',
+                                'checkin.originStopover.station.names',
+                                'checkin.destinationStopover.station.names',
+                                'checkin.trip.stopovers.station.names',
+                                'checkin.trip.polyline',
+                                'tags',
+                            ];
+
+        return Status::with($with)
+                     ->where('body', 'like', "%{$query}%")
+                     ->get()
+                     ->filter(function(Status $status) {
+                         return Gate::allows('view', $status) && $status->visibility !== StatusVisibility::UNLISTED;
+                     })
+                     ->sortByDesc(function(Status $status) {
+                         return $status->checkin->departure;
+                     })->values();
+                   // ->simplePaginate(10);
     }
 }

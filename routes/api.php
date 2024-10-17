@@ -210,6 +210,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['return-json']], static functio
             Route::get('status/{id}/likes', [LikesController::class, 'show']);
             Route::get('status/{statusId}/tags', [StatusTagController::class, 'index']);
             Route::get('statuses/{statusIds}/tags', [StatusTagController::class, 'indexForMultiple']);
+            Route::get('statuses/search/{query}', [StatusController::class, 'search']);
             Route::get('stopovers/{parameters}', [StatusController::class, 'getStopovers']);
             Route::get('polyline/{parameters}', [StatusController::class, 'getPolyline']);
             Route::get('event/{slug}', [EventController::class, 'show']);
